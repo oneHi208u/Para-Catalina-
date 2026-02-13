@@ -9,7 +9,7 @@
 <style>
 body {
     margin: 0;
-    background: radial-gradient(circle at center, #1a001a, #000000);
+    background: linear-gradient(to bottom, #000000, #1a001a);
     color: white;
     font-family: 'Poppins', sans-serif;
     text-align: center;
@@ -25,7 +25,6 @@ body {
     opacity: 0.8;
     animation: twinkle 2s infinite alternate;
 }
-
 @keyframes twinkle {
     from {opacity: 0.2;}
     to {opacity: 1;}
@@ -39,7 +38,6 @@ body {
     animation: floatUp linear infinite;
     opacity: 0.8;
 }
-
 @keyframes floatUp {
     from { transform: translateY(0); opacity: 1; }
     to { transform: translateY(-110vh); opacity: 0; }
@@ -49,10 +47,9 @@ body {
 .tulipan {
     position: fixed;
     top: -20px;
-    font-size: 26px;
+    font-size: 24px;
     animation: caerTulipan linear forwards;
 }
-
 @keyframes caerTulipan {
     from { transform: translateY(0) rotate(0deg); opacity:1; }
     to { transform: translateY(110vh) rotate(360deg); opacity:0; }
@@ -76,7 +73,6 @@ button {
     cursor: pointer;
     transition: 0.3s;
 }
-
 button:hover {
     background-color: #ff1a8c;
     transform: scale(1.1);
@@ -93,19 +89,18 @@ img {
     border-radius: 15px;
     transition: 0.5s;
 }
-
 img:hover {
     transform: scale(1.1);
 }
 
-/* 🎬 Pantalla final */
+/* 🎬 Overlay */
 .overlay {
     position: fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background: radial-gradient(circle, rgba(0,0,0,0.95), rgba(20,0,20,1));
+    background: radial-gradient(circle, rgba(255,0,128,0.15), rgba(0,0,0,0.95));
     display:flex;
     justify-content:center;
     align-items:center;
@@ -113,30 +108,62 @@ img:hover {
     opacity:0;
     pointer-events:none;
     transition:1.5s;
+    animation: fondoLatido 3s infinite;
 }
 
-/* ✨ Brillo pulsante */
+/* 💓 Fondo late */
+@keyframes fondoLatido {
+    0% { background: radial-gradient(circle, rgba(255,0,128,0.10), rgba(0,0,0,0.95)); }
+    50% { background: radial-gradient(circle, rgba(255,0,128,0.25), rgba(0,0,0,0.95)); }
+    100% { background: radial-gradient(circle, rgba(255,0,128,0.10), rgba(0,0,0,0.95)); }
+}
+
+/* 💖 Título */
 .overlay h2 {
-    font-size:2.8em;
+    font-size:3em;
     color:#ff4da6;
     margin-bottom:20px;
-    text-align:center;
-    animation: brilloPulsante 2s infinite;
+    text-shadow:0 0 20px #ff4da6;
+    animation: latidoReal 1.5s infinite;
+    position: relative;
 }
 
-@keyframes brilloPulsante {
-    0% {
-        text-shadow: 0 0 10px #ff4da6, 0 0 20px #ff4da6;
-        transform: scale(1);
-    }
-    50% {
-        text-shadow: 0 0 30px #ff1a8c, 0 0 60px #ff4da6;
-        transform: scale(1.06);
-    }
-    100% {
-        text-shadow: 0 0 10px #ff4da6, 0 0 20px #ff4da6;
-        transform: scale(1);
-    }
+/* 💓 Latido */
+@keyframes latidoReal {
+    0% { transform: scale(1); text-shadow: 0 0 15px #ff4da6; }
+    25% { transform: scale(1.08); text-shadow: 0 0 40px #ff1a8c; }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.05); text-shadow: 0 0 30px #ff66cc; }
+    100% { transform: scale(1); text-shadow: 0 0 15px #ff4da6; }
+}
+
+/* 🌟 Destello constante */
+.overlay h2::after {
+    content:"";
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:5px;
+    height:5px;
+    background:white;
+    border-radius:50%;
+    box-shadow:0 0 20px white, 0 0 40px #ff4da6;
+    animation: destello 3s infinite;
+}
+@keyframes destello {
+    0% { opacity:0; transform:translate(-50%,-50%) scale(0); }
+    50% { opacity:1; transform:translate(-50%,-50%) scale(2); }
+    100% { opacity:0; transform:translate(-50%,-50%) scale(0); }
+}
+
+/* ✨ Explosión épica */
+.epico {
+    animation: explosionBrillo 1.2s ease;
+}
+@keyframes explosionBrillo {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.15); text-shadow: 0 0 60px #ffffff, 0 0 100px #ff4da6; }
+    100% { transform: scale(1); }
 }
 
 .carta {
@@ -147,25 +174,20 @@ img:hover {
 }
 
 .oculto {
-    opacity:0;
     font-size:1.4em;
     color:#ff99cc;
     margin-top:20px;
-    transition:2s;
-    text-shadow:0 0 20px #ff4da6;
+    text-shadow:0 0 15px #ff4da6;
 }
 </style>
 </head>
 
 <body>
 
-<iframe id="musica"
-width="0"
-height="0"
-src=""
-frameborder="0"
-allow="autoplay">
-</iframe>
+<iframe id="musica" width="0" height="0" src="" frameborder="0" allow="autoplay"></iframe>
+
+<!-- 🔔 Campana -->
+<audio id="campana" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c2b4b0b8b.mp3?filename=magic-bell-6214.mp3"></audio>
 
 <div class="cinema">
     <h1>Para Catalina 💖</h1>
@@ -191,9 +213,7 @@ allow="autoplay">
 <div class="overlay" id="final">
     <h2>TE AMO CATALINA SALMAN CIPPITELLI MI CENICIENTA 💘❤️♾️💖</h2>
     <div class="carta" id="carta"></div>
-    <div class="oculto" id="mensajeFinal">
-        Te hago la promesa de que siempre estaremos juntos y ahora dame tu mano 💍
-    </div>
+    <div class="oculto" id="mensajeFinal"></div>
 </div>
 
 <script>
@@ -201,44 +221,56 @@ allow="autoplay">
 const videoID = "ubq19HWOYo4";
 
 function iniciarSorpresa() {
-
     document.getElementById("galeria").style.display = "block";
-
     const iframe = document.getElementById("musica");
     iframe.src = "https://www.youtube.com/embed/" + videoID + "?autoplay=1&loop=1&playlist=" + videoID;
-
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-
-    // ⏳ Esperar 20 segundos antes del final
-    setTimeout(mostrarFinal, 20000);
+    setTimeout(mostrarFinal, 8000);
 }
 
 function mostrarFinal(){
     const overlay = document.getElementById("final");
     overlay.style.opacity = "1";
     overlay.style.pointerEvents = "all";
-
-    iniciarTulipanes();
     escribirCarta();
-
-    // Mostrar mensaje al mismo tiempo
-    document.getElementById("mensajeFinal").style.opacity = "1";
+    iniciarTulipanes();
 }
 
 function escribirCarta(){
-    const texto = "Desde que llegaste a mi vida, todo tiene más color.\n\nSos mi casualidad favorita, mi mejor historia, mi mejor destino.\n\nSi esto fuera una película, elegiría mil veces volver a conocerte.\n\nY si la vida es una historia...\nQuiero que la mía siempre sea con vos.";
+    const texto = "Desde que llegaste a mi vida, todo tiene más color.\n\nSos mi casualidad favorita, mi mejor historia, mi mejor destino.\n\nSi esto fuera una película, elegiría mil veces volver a conocerte.\n\nY si la vida es una historia...\nQuiero que la mía siempre sea con vos.\n\n";
     let i = 0;
-    const velocidad = 50;
-
     function escribir(){
         if(i < texto.length){
             document.getElementById("carta").innerHTML += texto.charAt(i);
             i++;
-            setTimeout(escribir, velocidad);
+            setTimeout(escribir, 50);
+        } else {
+            setTimeout(escribirPromesa, 1000);
         }
     }
-
     escribir();
+}
+
+function escribirPromesa(){
+    const promesa = "Te hago la promesa de que siempre estaremos juntos y ahora dame tu mano 💍";
+    let j = 0;
+    function escribir2(){
+        if(j < promesa.length){
+            document.getElementById("mensajeFinal").innerHTML += promesa.charAt(j);
+            j++;
+            setTimeout(escribir2, 60);
+        } else {
+            momentoEpico();
+        }
+    }
+    escribir2();
+}
+
+function momentoEpico(){
+    document.getElementById("campana").play();
+    const titulo = document.querySelector(".overlay h2");
+    titulo.classList.add("epico");
+    setTimeout(() => titulo.classList.remove("epico"), 1200);
 }
 
 /* Corazones */
@@ -250,7 +282,7 @@ function crearCorazon() {
     heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
     heart.style.fontSize = (Math.random() * 20 + 15) + "px";
     document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, 6000);
+    setTimeout(() => heart.remove(), 6000);
 }
 setInterval(crearCorazon, 300);
 
@@ -263,7 +295,7 @@ function iniciarTulipanes(){
         tulipan.style.left=Math.random()*100+"vw";
         tulipan.style.animationDuration=(Math.random()*3+4)+"s";
         document.body.appendChild(tulipan);
-        setTimeout(()=>{ tulipan.remove(); },7000);
+        setTimeout(()=> tulipan.remove(),7000);
     },500);
 }
 
@@ -278,6 +310,5 @@ for(let i=0;i<80;i++){
 }
 
 </script>
-
 </body>
 </html>
