@@ -16,25 +16,18 @@ body {
     overflow-x: hidden;
 }
 
-/* Corazones flotando */
+/* Corazones */
 .heart {
     position: fixed;
     bottom: -10px;
     color: #ff4da6;
     animation: floatUp linear infinite;
-    font-size: 20px;
     opacity: 0.8;
 }
 
 @keyframes floatUp {
-    from {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-110vh) scale(1.5);
-        opacity: 0;
-    }
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-110vh); opacity: 0; }
 }
 
 .cinema {
@@ -59,10 +52,10 @@ p {
 }
 
 button {
-    padding: 12px 25px;
+    padding: 14px 30px;
     background-color: #ff4da6;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     color: white;
     font-size: 1em;
     cursor: pointer;
@@ -77,7 +70,8 @@ button:hover {
 
 .gallery {
     margin-top: 50px;
-    animation: fadeUp 3s ease-in-out;
+    display: none;
+    animation: fadeUp 2s ease-in-out;
 }
 
 img {
@@ -105,10 +99,13 @@ img:hover {
 
 <body>
 
-<!-- Música automática (reemplazar VIDEO_ID) -->
-<iframe width="0" height="0" 
-src="https://www.youtube.com/embed/ubq19HWOYo4?autoplay=1&loop=1&playlist=VIDEO_ID" 
-frameborder="0" allow="autoplay">
+<!-- Música (oculta) -->
+<iframe id="musica"
+width="0"
+height="0"
+src=""
+frameborder="0"
+allow="autoplay">
 </iframe>
 
 <div class="cinema">
@@ -119,10 +116,10 @@ frameborder="0" allow="autoplay">
         Desde ese momento, supe que mi historia favorita
         sería la que escribo con vos.
     </p>
-    <button onclick="mostrarGaleria()">Nuestra Historia ✨</button>
+    <button onclick="iniciarSorpresa()">Nuestra Historia ✨</button>
 </div>
 
-<div class="gallery" id="galeria" style="display:none;">
+<div class="gallery" id="galeria">
     <h2>Momentos que guardo en el corazón</h2>
     <img src="foto1.jpg">
     <img src="foto2.jpg">
@@ -130,13 +127,23 @@ frameborder="0" allow="autoplay">
 </div>
 
 <script>
-// Mostrar galería
-function mostrarGaleria() {
+
+// ⚠️ PONÉ ACÁ EL ID DEL VIDEO
+const videoID = ubq19HWOYo4;
+
+function iniciarSorpresa() {
+
+    // Mostrar galería
     document.getElementById("galeria").style.display = "block";
+
+    // Reproducir música
+    const iframe = document.getElementById("musica");
+    iframe.src = "https://www.youtube.com/embed/ubq19HWOYo4?autoplay=1&loop=1&playlist=" + videoID;
+
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
 
-// Crear corazones automáticamente
+// Corazones flotando
 function crearCorazon() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -152,6 +159,7 @@ function crearCorazon() {
 }
 
 setInterval(crearCorazon, 300);
+
 </script>
 
 </body>
