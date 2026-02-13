@@ -16,7 +16,22 @@ body {
     overflow-x: hidden;
 }
 
-/* Corazones */
+/* ⭐ Estrellas */
+.star {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.8;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from {opacity: 0.2;}
+    to {opacity: 1;}
+}
+
+/* 💖 Corazones */
 .heart {
     position: fixed;
     bottom: -10px;
@@ -30,25 +45,25 @@ body {
     to { transform: translateY(-110vh); opacity: 0; }
 }
 
+/* 🌷 Tulipanes */
+.tulipan {
+    position: fixed;
+    top: -20px;
+    font-size: 24px;
+    animation: caerTulipan linear forwards;
+}
+
+@keyframes caerTulipan {
+    from { transform: translateY(0) rotate(0deg); opacity:1; }
+    to { transform: translateY(110vh) rotate(360deg); opacity:0; }
+}
+
 .cinema {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 3em;
-    animation: fadeIn 3s ease-in-out;
-}
-
-p {
-    font-size: 1.2em;
-    max-width: 600px;
-    margin: 20px auto;
-    animation: fadeIn 5s ease-in-out;
 }
 
 button {
@@ -60,7 +75,6 @@ button {
     font-size: 1em;
     cursor: pointer;
     transition: 0.3s;
-    animation: fadeIn 6s ease-in-out;
 }
 
 button:hover {
@@ -71,7 +85,6 @@ button:hover {
 .gallery {
     margin-top: 50px;
     display: none;
-    animation: fadeUp 2s ease-in-out;
 }
 
 img {
@@ -85,21 +98,51 @@ img:hover {
     transform: scale(1.1);
 }
 
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+/* 🎬 Pantalla final */
+.overlay {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    opacity:0;
+    pointer-events:none;
+    transition:1.5s;
 }
 
-@keyframes fadeUp {
-    from {opacity: 0; transform: translateY(40px);}
-    to {opacity: 1; transform: translateY(0);}
+.overlay h2 {
+    font-size:3em;
+    color:#ff4da6;
+    margin-bottom:20px;
+    text-shadow:0 0 20px #ff4da6;
+}
+
+.carta {
+    max-width:600px;
+    font-size:1.2em;
+    white-space:pre-wrap;
+    margin-bottom:20px;
+}
+
+/* 💌 Mensaje oculto */
+.oculto {
+    opacity:0;
+    font-size:1.4em;
+    color:#ff99cc;
+    margin-top:20px;
+    transition:2s;
+    text-shadow:0 0 15px #ff4da6;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Música (oculta) -->
 <iframe id="musica"
 width="0"
 height="0"
@@ -113,8 +156,6 @@ allow="autoplay">
     <p>
         Como en las películas que nos hacen creer en el amor eterno,
         apareciste en mi vida y cambiaste cada escena.
-        Desde ese momento, supe que mi historia favorita
-        sería la que escribo con vos.
     </p>
     <button onclick="iniciarSorpresa()">Nuestra Historia ✨</button>
 </div>
@@ -131,24 +172,57 @@ allow="autoplay">
     <img src="IMG-20250713-WA0069.jpg">
 </div>
 
+<div class="overlay" id="final">
+    <h2>TE AMO CATALINA 💖</h2>
+    <div class="carta" id="carta"></div>
+    <div class="oculto" id="mensajeFinal">
+        Te hago la promesa de que siempre estaremos juntos y ahora dame tu mano 💍
+    </div>
+</div>
+
 <script>
 
-// ⚠️ PONÉ ACÁ EL ID DEL VIDEO
 const videoID = "ubq19HWOYo4";
 
 function iniciarSorpresa() {
 
-    // Mostrar galería
     document.getElementById("galeria").style.display = "block";
 
-    // Reproducir música
     const iframe = document.getElementById("musica");
     iframe.src = "https://www.youtube.com/embed/" + videoID + "?autoplay=1&loop=1&playlist=" + videoID;
 
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+    setTimeout(mostrarFinal, 8000);
 }
 
-// Corazones flotando
+function mostrarFinal(){
+    const overlay = document.getElementById("final");
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "all";
+    escribirCarta();
+    iniciarTulipanes();
+}
+
+function escribirCarta(){
+    const texto = "Desde que llegaste a mi vida, todo tiene más color.\n\nSos mi casualidad favorita, mi mejor historia, mi mejor destino.\n\nSi esto fuera una película, elegiría mil veces volver a conocerte.\n\nY si la vida es una historia...\nQuiero que la mía siempre sea con vos.";
+    let i = 0;
+    const velocidad = 50;
+    function escribir(){
+        if(i < texto.length){
+            document.getElementById("carta").innerHTML += texto.charAt(i);
+            i++;
+            setTimeout(escribir, velocidad);
+        } else {
+            setTimeout(() => {
+                document.getElementById("mensajeFinal").style.opacity = "1";
+            }, 1500);
+        }
+    }
+    escribir();
+}
+
+/* Corazones */
 function crearCorazon() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -157,13 +231,32 @@ function crearCorazon() {
     heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
     heart.style.fontSize = (Math.random() * 20 + 15) + "px";
     document.body.appendChild(heart);
+    setTimeout(() => { heart.remove(); }, 6000);
+}
+setInterval(crearCorazon, 300);
 
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
+/* Tulipanes */
+function iniciarTulipanes(){
+    setInterval(()=>{
+        const tulipan=document.createElement("div");
+        tulipan.classList.add("tulipan");
+        tulipan.innerHTML="🌷";
+        tulipan.style.left=Math.random()*100+"vw";
+        tulipan.style.animationDuration=(Math.random()*3+4)+"s";
+        document.body.appendChild(tulipan);
+        setTimeout(()=>{ tulipan.remove(); },7000);
+    },500);
 }
 
-setInterval(crearCorazon, 300);
+/* Estrellas */
+for(let i=0;i<80;i++){
+    const star=document.createElement("div");
+    star.classList.add("star");
+    star.style.top=Math.random()*100+"vh";
+    star.style.left=Math.random()*100+"vw";
+    star.style.animationDuration=(Math.random()*2+1)+"s";
+    document.body.appendChild(star);
+}
 
 </script>
 
