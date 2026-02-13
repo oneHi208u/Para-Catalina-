@@ -1,2 +1,0 @@
-# Para-Catalina-
-TE AMOOOOOOO
